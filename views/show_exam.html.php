@@ -73,7 +73,7 @@ if($single_page != 1 and $answer_display!=2): ?>
      $percent_rate=round(100/($num_questions/1));
 	?>
 	<?php echo $all_questions; ?>
-	 <div id="progress" class="graph"><div id="bar" style="width:<?php echo $percent_rate;?>%"><p><?php _e('Question', 'watu')?> <span id='numQ'>1</span> <?php _e('of', 'watu')?> <?php echo $num_questions;?></p></div></div>
+	<p><?php _e('Question', 'watu')?> <span id='numQ'>1</span> <?php _e('of', 'watu')?> <?php echo $num_questions;?></p>
 	<?php if($exam->show_prev_button):?>
 		<input type="button" id="prev-question" value="&lt; <?php _e('Previous', 'watu') ?>" onclick="Watu.nextQuestion(event, 'prev');" style="display:none;" />
 	<?php endif;?>

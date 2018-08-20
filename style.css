@@ -183,3 +183,7 @@ color: red;
 .qu_tooltip{
 	display: none;
 }
+
+.hidden{
+	display: none;
+}

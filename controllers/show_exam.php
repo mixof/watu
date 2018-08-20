@@ -126,7 +126,7 @@ if(isset($_REQUEST['do']) and $_REQUEST['do']) { // Quiz Reuslts.
 		$all_answers = $ques->answers;
 		$correct = false;
 		$class = $textarea_class = 'answer';
-		$result .= "<ul>";
+		$result .= '<ul class="hidden">';
 		$ansArr = is_array( @$_REQUEST["answer-" . $ques->ID] )? $_POST["answer-" . $ques->ID] : array();
 		foreach ($all_answers as $ans) {
 			$class = 'answer';
