@@ -11,6 +11,7 @@ $question_count = 1;
 $question_ids = '';
 $output = $answer_class = '';
 $answers_orderby = empty($exam->randomize_answers) ? 'sort_order, ID' : 'RAND()';
+$all_questions='<ul>';
 foreach ($questions as $qct => $ques) {
 	$qnum = $qct+1;
 	$question_number = empty($exam->dont_display_question_numbers) ? "<span class='watu_num'>$qnum. </span>"  : '';
@@ -22,7 +23,11 @@ foreach ($questions as $qct => $ques) {
 	$dans = $wpdb->get_results("SELECT ID,answer,correct FROM ".WATU_ANSWERS." 
 		WHERE question_id={$ques->ID} ORDER BY $answers_orderby");
 	$ans_type = $ques->answer_type;
-	
+	if($question_count==1)
+	$all_questions.='<li class="qu_point current_q">';
+    else $all_questions.='<li class="qu_point">';
+    
+    $all_questions.='<div class="qu_tooltip" data-id="'.$ques->ID.'">Question 1: '.$question_number.'</div></li>';
 	// display textarea
 	if($ans_type=='textarea') {
 		$output .= "<textarea name='answer-{$ques->ID}[]' rows='5' cols='40' id='textarea_q_{$ques->ID}' class='watu-textarea watu-textarea-$question_count'></textarea>"; 
@@ -51,6 +56,7 @@ foreach ($questions as $qct => $ques) {
 	$output .= "</div>";
 	$question_count++;
 }
+$all_questions.='</ul>';
 $output .= "<div style='display:none' id='question-$question_count'>";
 $output .= "<br /><div class='question-content'><img src=\"".plugins_url('watu/loading.gif')."\" width=\"16\" height=\"16\" alt=\"".__('Loading', 'watu')." ...\" title=\"".__('Loading', 'watu')." ...\" />&nbsp;".__('Loading', 'watu')." ...</div>";
 $output .= "</div>";
@@ -64,8 +70,9 @@ if($answer_display == 2 and $single_page != 1) : ?>
 <?php endif;
 if($single_page != 1 and $answer_display!=2): ?>	
 	<?php $percent_rate=0;
-     $percent_rate=round(100/($num_questions/1),2);
+     $percent_rate=round(100/($num_questions/1));
 	?>
+	<?php echo $all_questions; ?>
 	 <div id="progress" class="graph"><div id="bar" style="width:<?php echo $percent_rate;?>%"><p><?php _e('Question', 'watu')?> <span id='numQ'>1</span> <?php _e('of', 'watu')?> <?php echo $num_questions;?></p></div></div>
 	<?php if($exam->show_prev_button):?>
 		<input type="button" id="prev-question" value="&lt; <?php _e('Previous', 'watu') ?>" onclick="Watu.nextQuestion(event, 'prev');" style="display:none;" />

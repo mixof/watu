@@ -1,5 +1,6 @@
 // wrap in object to avoid polluting the javascript namespace
 var Watu={};
+var preview_state="";
 
 Watu.current_question = 1;
 Watu.total_questions = 0;
@@ -92,7 +93,11 @@ jQuery(".answer-btn").on('click',function(e){
     jQuery("#answer-id-"+aid).click();   
     if(Watu.current_question<Watu.total_questions)
     Watu.nextQuestion();
-    else Watu.submitResult();
+    else Watu.submitResult();  
+
+    var next_el=jQuery( ".qu_point.current_q" ).toggleClass( 'current_q complete_q').next();  
+    if(jQuery(next_el).hasClass('complete_q')){ preview_state=next_el;
+    jQuery(next_el).addClass('current_q');}
     doProgress(Watu.current_question, Watu.total_questions, "#bar");
     
 });
@@ -294,8 +299,31 @@ jQuery(document).ready(Watu.initWatu);
 
 function doProgress(current, total,element)
 {
-	
+
   var progress=	100/(total/current);
   jQuery(element).animate({width: progress+"%"}, 500);
 
 }
+
+
+
+
+jQuery("li.qu_point").on('click',function(e){
+
+
+	if(jQuery(this).hasClass('complete_q')){
+        jQuery(preview_state).addClass("complete_q");
+		var question_number=jQuery(this).find(".qu_tooltip").data('id');
+        preview_state=this;  
+		jQuery( ".qu_point.current_q" ).removeClass( 'current_q');  
+		jQuery(this).toggleClass("complete_q current_q");				
+
+		jQuery("#question-" + Watu.current_question).hide();
+		Watu.current_question=question_number;
+		jQuery("#question-" + Watu.current_question).show();		
+
+	}
+  
+});
+
+

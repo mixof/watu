@@ -126,7 +126,7 @@ if(isset($_REQUEST['do']) and $_REQUEST['do']) { // Quiz Reuslts.
 		$all_answers = $ques->answers;
 		$correct = false;
 		$class = $textarea_class = 'answer';
-		/*$result .= "<ul>";
+		$result .= "<ul>";
 		$ansArr = is_array( @$_REQUEST["answer-" . $ques->ID] )? $_POST["answer-" . $ques->ID] : array();
 		foreach ($all_answers as $ans) {
 			$class = 'answer';
@@ -144,7 +144,7 @@ if(isset($_REQUEST['do']) and $_REQUEST['do']) { // Quiz Reuslts.
 			$result .= wpautop("<li class='user-answer $textarea_class'><span class='answer'><!--WATUEMAIL".$class."WATUEMAIL-->".esc_html(stripslashes($_POST["answer-" . $ques->ID][0]))."</span></li>");
 		}		
 		
-		$result .= "</ul>";*/
+		$result .= "</ul>";
 		if(($ques->answer_type == 'textarea' and empty($_POST["answer-" . $ques->ID][0])) 
 			or ($ques->answer_type != 'textarea' and empty($_POST["answer-" . $ques->ID])) ) {
 			$num_empty++;	 

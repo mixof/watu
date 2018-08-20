@@ -158,3 +158,28 @@ color: red;
 	padding: 5px;
 	cursor: pointer;
 }
+
+.qu_point
+{
+	background-color: #ababab;
+    border-radius: 50%;
+    margin-top: 1px;
+    display: inline-block;
+    margin: 2px;
+    width: 8px;
+    height: 8px;
+    cursor: pointer;
+}
+
+.qu_point.current_q{
+	background-color: #f89e4a;
+}
+
+.qu_point.complete_q{
+	background-color: #000; 
+
+}
+
+.qu_tooltip{
+	display: none;
+}
