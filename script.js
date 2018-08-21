@@ -332,5 +332,8 @@ jQuery("li.qu_point").on('click',function(e){
 jQuery('body').on('click', '.show-question', function() {
     // do something
       jQuery(this).find(".question-desc").toggle();
+      jQuery(this).find(".opener").toggleClass("rotate_up"); 
 });
+
+
 

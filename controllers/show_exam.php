@@ -120,13 +120,12 @@ if(isset($_REQUEST['do']) and $_REQUEST['do']) { // Quiz Reuslts.
 		$is_empty = false;
 		$qnum = $qct+1;
 		$question_number = empty($exam->dont_display_question_numbers) ? "<span class='watu_num'>$qnum. </span>"  : '';
-		
-		$result .= "<div class='show-question'>";
-		$result .= "<div class='show-question-content'>". $question_number . stripslashes($ques->question). "</div>";
+
 		$all_answers = $ques->answers;
 		$correct = false;
 		$class = $textarea_class = 'answer';
-		$result .= '<ul class="hidden">';
+
+		
 		$ansArr = is_array( @$_REQUEST["answer-" . $ques->ID] )? $_POST["answer-" . $ques->ID] : array();
 		foreach ($all_answers as $ans) {
 			$class = 'answer';
@@ -134,8 +133,15 @@ if(isset($_REQUEST['do']) and $_REQUEST['do']) { // Quiz Reuslts.
 			list($points, $correct, $class) = WatuQuestion :: calculate($ques, $ans, $ansArr, $correct, $class);		
 			if(strstr($class, 'correct-answer')) $textarea_class = $class;	
 			
-			$achieved += $points;
-			if($ques->answer_type != 'textarea') $result .= wpautop("<li class='$class'><span class='answer'><!--WATUEMAIL".$class."WATUEMAIL-->" . stripslashes($ans->answer) . "</span></li>");
+			$achieved += $points;			
+			if($ques->answer_type != 'textarea' && stripos($class, "user-answer")!==false)
+			{
+				if(stripos($ans->answer, "yes")!==false) 
+				$result .= wpautop('<div class="q_answer"><span class="dashicons dashicons-yes"></span></div>');
+			    else if(stripos($ans->answer, "no")!==false)
+			    $result .= wpautop('<div class="q_answer"><span class="dashicons dashicons-no-alt"></span></div>');	
+			    else $result .= wpautop("<div class='q_answer'></div>");
+			} 
 		}
 
 		// textareas
@@ -143,14 +149,19 @@ if(isset($_REQUEST['do']) and $_REQUEST['do']) { // Quiz Reuslts.
 			if(!sizeof($all_answers)) $textarea_class = 'correct-answer';
 			$result .= wpautop("<li class='user-answer $textarea_class'><span class='answer'><!--WATUEMAIL".$class."WATUEMAIL-->".esc_html(stripslashes($_POST["answer-" . $ques->ID][0]))."</span></li>");
 		}		
-		
-		$result .= "</ul>";
 		if(($ques->answer_type == 'textarea' and empty($_POST["answer-" . $ques->ID][0])) 
 			or ($ques->answer_type != 'textarea' and empty($_POST["answer-" . $ques->ID])) ) {
 			$num_empty++;	 
 			$is_empty = true;
 			$result .= "<p class='unanswered'>" . __('Question was not answered', 'watu') . "</p>";
 		}
+		
+		$result .= "<div class='show-question'>";
+		$result .= '<div class="opener"><span class="dashicons dashicons-arrow-down-alt2"></span></div>';
+		$result .= "<div class='show-question-content'>". $question_number . stripslashes($ques->question);     	
+			
+		
+		$result.="</div>"; //end question content		
 			
 		// answer explanation?
 		if(!empty($ques->feedback)) {
